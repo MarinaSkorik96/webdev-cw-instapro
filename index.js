@@ -130,4 +130,4 @@ const renderApp = () => {
   }
 };
 
-goToPage(POSTS_PAGE);
+goToPage(POSTS_PAGE); //Генерит страницы
