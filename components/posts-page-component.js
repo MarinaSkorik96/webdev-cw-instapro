@@ -44,8 +44,8 @@ export function renderPostsPageComponent({ appEl }) {
       </li>`
   })
   // console.log(allPosts);
-const postsDiv = document.querySelector(".posts")
-postsDiv.innerHTML = allPosts;
+document.querySelector(".posts").innerHTML = allPosts;
+
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
