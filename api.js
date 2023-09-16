@@ -1,5 +1,7 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
+import {getToken} from "./index.js";
+
 const personalKey = "marinaskorik";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
@@ -73,4 +75,19 @@ export function uploadImage({ file }) {
 }
 
 //Загрузка поста на сервер
-export function sendPost ({description, imageUrl})
+export function sendPost ({description, imageUrl}) {
+  return fetch("https://wedev-api.sky.pro/api/v1/marinaskorik/instapro", {
+    method: "POST",
+    body: JSON.stringify({
+      description: description,
+      imageUrl: imageUrl
+    }),
+    headers: {
+      Authorization: getToken() ,
+    }
+  }).then((response) => {
+    return response.json();
+  }).then(() => {
+    console.log("отправлено");
+  })
+}

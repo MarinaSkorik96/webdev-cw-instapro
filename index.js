@@ -20,7 +20,7 @@ export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
 
-const getToken = () => {
+export const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
 };
@@ -109,26 +109,27 @@ const renderApp = () => {
   if (page === ADD_POSTS_PAGE) {
     return renderAddPostPageComponent({
       appEl,
-      onAddPostClick({ description, imageUrl }) {
-        return fetch("https://wedev-api.sky.pro/api/v1/marinaskorik/instapro", {
-          method: "POST",
-          body: JSON.stringify({
-            description: description,
-            imageUrl: imageUrl
-          }),
-          headers: {
-            Authorization: getToken(),
-          }
-        }).then((response) => {
-          return response.json();
-        }).then(() => {
-          console.log("отправлено");
-        })
+      onAddPostClick() {
+        // return fetch("https://wedev-api.sky.pro/api/v1/marinaskorik/instapro", {
+        //   method: "POST",
+        //   body: JSON.stringify({
+        //     description: description,
+        //     imageUrl: imageUrl
+        //   }),
+        //   headers: {
+        //     Authorization: getToken(),
+        //   }
+        // }).then((response) => {
+        //   return response.json();
+        // }).then(() => {
+        //   console.log("отправлено");
+        // })
         // TODO: реализовать добавление поста в API
         // console.log("Добавляю пост...", { description, imageUrl });
         // goToPage(POSTS_PAGE);
+        goToPage(POSTS_PAGE);
+
       },
-      goToPage,
     });
 
   }
