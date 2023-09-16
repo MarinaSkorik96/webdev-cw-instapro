@@ -5,6 +5,10 @@ import { renderUploadImageComponent } from "./upload-image-component.js";
 
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
+  let isLoginMode = true;
+  let imageUrl = "";
+
+
   const render = () => {
     // TODO: Реализовать страницу добавления поста
     const appHtml = `
@@ -24,7 +28,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
         </div>
         <label>
           Опишите фотoграфию:
-          <textarea class="input textarea" rows="4"></textarea>
+          <textarea class="input textarea" rows="4" id="textarea-input"></textarea>
         </label>
         <button class="button" id="add-button">Добавить</button>
       </div>
@@ -34,7 +38,6 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
 
     appEl.innerHTML = appHtml;
 
-    let imageUrl = "";
 
     const uploadImageContainer = appEl.querySelector(".upload-image-container");
 
@@ -48,13 +51,45 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     }
 
     document.getElementById("add-button").addEventListener("click", () => {
+      if (isLoginMode) {
+        const imageInput = document.getElementById("textarea-input").value;
 
-      sendPost({
-        description: document.querySelector('.input').value,
-        imageUrl: imageUrl,
-      }).then(() => {
-        onAddPostClick();
-      })
+        if (!imageInput) {
+          alert("Не заполнено описание фото");
+          return;
+        }
+  
+        if (!imageUrl) {
+          alert("Не выбрана фотография");
+          return;
+        }
+  
+        sendPost({
+          description: document.querySelector('.input').value,
+          imageUrl: imageUrl,
+        }).then(() => {
+          onAddPostClick();
+        })
+  
+      }
+      //   const imageInput = document.getElementById("image-input");
+
+      // if (imageInput === "") {
+      //   alert("Не заполнено описание фото");
+      //   return;
+      // }
+
+      // if (!imageUrl) {
+      //   alert("Не выбрана фотография");
+      //   return;
+      // }
+
+      // sendPost({
+      //   description: document.querySelector('.input').value,
+      //   imageUrl: imageUrl,
+      // }).then(() => {
+      //   onAddPostClick();
+      // })
       // onAddPostClick();
     });
   };
