@@ -1,3 +1,5 @@
+//Страница с загрузкой фото
+
 import { uploadImage } from "../api.js";
 
 export function renderUploadImageComponent({ element, onImageUrlChange }) {
