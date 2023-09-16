@@ -72,25 +72,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
         })
   
       }
-      //   const imageInput = document.getElementById("image-input");
 
-      // if (imageInput === "") {
-      //   alert("Не заполнено описание фото");
-      //   return;
-      // }
-
-      // if (!imageUrl) {
-      //   alert("Не выбрана фотография");
-      //   return;
-      // }
-
-      // sendPost({
-      //   description: document.querySelector('.input').value,
-      //   imageUrl: imageUrl,
-      // }).then(() => {
-      //   onAddPostClick();
-      // })
-      // onAddPostClick();
     });
   };
 

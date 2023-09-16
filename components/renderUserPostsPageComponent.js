@@ -1,12 +1,7 @@
-//Рендер главной страницы
-
-import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
-export function renderPostsPageComponent({ appEl }) {
-  // TODO: реализовать рендер постов из api
-
+export function renderUserPostsPageComponent ({appEl}) {
   const appHtml = `
   <div class="page-container">
     <div class="header-container"></div>

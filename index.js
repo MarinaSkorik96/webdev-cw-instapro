@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { getPosts, getUserPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -15,6 +15,7 @@ import {
   removeUserFromLocalStorage,
   saveUserToLocalStorage,
 } from "./helpers.js";
+import { renderUserPostsPageComponent } from "./components/renderUserPostsPageComponent.js";
 
 export let user = getUserFromLocalStorage();
 export let page = null;
@@ -68,7 +69,16 @@ export const goToPage = (newPage, data) => {
 
     if (newPage === USER_POSTS_PAGE) {
       // TODO: реализовать получение постов юзера из API
+      // export function renderUserPostsPageComponent() {};
       console.log("Открываю страницу пользователя: ", data.userId);
+      const userId = data.userId
+      console.log(userId);
+      return getUserPosts({userId})
+      .then((userPosts) => {
+        page = USER_POSTS_PAGE;
+        posts = userPosts;
+        renderApp();
+      })
       page = USER_POSTS_PAGE;
       posts = [];
       return renderApp();
@@ -110,28 +120,9 @@ const renderApp = () => {
     return renderAddPostPageComponent({
       appEl,
       onAddPostClick() {
-        // return fetch("https://wedev-api.sky.pro/api/v1/marinaskorik/instapro", {
-        //   method: "POST",
-        //   body: JSON.stringify({
-        //     description: description,
-        //     imageUrl: imageUrl
-        //   }),
-        //   headers: {
-        //     Authorization: getToken(),
-        //   }
-        // }).then((response) => {
-        //   return response.json();
-        // }).then(() => {
-        //   console.log("отправлено");
-        // })
-        // TODO: реализовать добавление поста в API
-        // console.log("Добавляю пост...", { description, imageUrl });
-        // goToPage(POSTS_PAGE);
         goToPage(POSTS_PAGE);
-
       },
     });
-
   }
 
   if (page === POSTS_PAGE) {
@@ -142,8 +133,11 @@ const renderApp = () => {
 
   if (page === USER_POSTS_PAGE) {
     // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    return;
+    console.log(posts);
+    // appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+    return renderUserPostsPageComponent({
+      appEl,
+    });
   }
 };
 
