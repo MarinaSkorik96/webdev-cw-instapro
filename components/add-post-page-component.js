@@ -1,4 +1,5 @@
 //Страница добавления поста
+import { sendPost } from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
 
@@ -47,9 +48,14 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     }
 
     document.getElementById("add-button").addEventListener("click", () => {
-      onAddPostClick({
+
+      sendPost({
         description:document.querySelector('.input').value,
         imageUrl: imageUrl,
+      })
+      onAddPostClick({
+        // description:document.querySelector('.input').value,
+        // imageUrl: imageUrl,
       });
     });
   };
