@@ -1,6 +1,6 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-import {getToken} from "./index.js";
+import { getToken } from "./index.js";
 
 const personalKey = "marinaskorik";
 const baseHost = "https://webdev-hw-api.vercel.app";
@@ -25,16 +25,16 @@ export function getPosts({ token }) {
     });
 }
 
-export function getUserPosts({userId}) {
+export function getUserPosts({ userId }) {
   return fetch(postsHost + "/user-posts/" + userId, {
     metod: "GET",
   })
-  .then((response) => {
-    return response.json();
-  })
-  .then ((data) => {
-    return data.posts;
-  });
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data.posts;
+    });
 }
 
 // https://github.com/GlebkaF/webdev-hw-api/blob/main/pages/api/user/README.md#%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%D1%81%D1%8F
@@ -87,7 +87,7 @@ export function uploadImage({ file }) {
 }
 
 //Загрузка поста на сервер
-export function sendPost ({description, imageUrl}) {
+export function sendPost({ description, imageUrl }) {
   return fetch("https://wedev-api.sky.pro/api/v1/marinaskorik/instapro", {
     method: "POST",
     body: JSON.stringify({
@@ -95,11 +95,48 @@ export function sendPost ({description, imageUrl}) {
       imageUrl: imageUrl
     }),
     headers: {
-      Authorization: getToken() ,
+      Authorization: getToken(),
     }
   }).then((response) => {
     return response.json();
   }).then(() => {
     console.log("отправлено");
+  })
+}
+
+//Поставить лайк
+
+export function postLike({ id }) {
+  return fetch(postsHost + "/" + id + "/like", {
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    }
+  }).then((response) => {
+    return response.json();
+  })
+}
+
+//Убрать лайк
+export function postDisLike({ id }) {
+  return fetch(postsHost + "/" + id + "/dislike", {
+    method: "POST",
+    headers: {
+      Authorization: getToken(),
+    }
+  }).then((response) => {
+    return response.json();
+  })
+}
+
+// Удалить пост
+export function deletePost({ id }) {
+  return fetch(postsHost + "/" + id, {
+    method: "DELETE",
+    headers: {
+      Authorization: getToken(),
+    }
+  }).then((response) => {
+    return response.json();
   })
 }

@@ -1,8 +1,11 @@
 //Рендер главной страницы
 
-import { USER_POSTS_PAGE } from "../routes.js";
+import { USER_POSTS_PAGE, POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
+import { postLike, postDisLike, deletePost } from "../api.js";
+// import { cliсkLike } from "./click-like-component.js";
+
 
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
@@ -26,13 +29,22 @@ export function renderPostsPageComponent({ appEl }) {
         <div class="post-image-container">
           <img class="post-image" src=${post.imageUrl}>
         </div>
-        <div class="post-likes">
-          <button data-post-id="${post.id}" class="like-button">
-            <img src="./assets/images/like-active.svg">
-          </button>
-          <p class="post-likes-text">
-            Нравится: <strong>${post.likes.length}</strong>
-          </p>
+        <div class="post-bottom">
+          <div class="post-likes">
+            <button data-post-id="${post.id}" data-is-liked="${post.isLiked}" class="like-button">
+              ${post.isLiked
+                ? `<img src="./assets/images/like-active.svg">`
+                : `<img src="./assets/images/like-not-active.svg">`}
+            </button>
+            <p class="post-likes-text">
+              Нравится: <strong>${post.likes.length < 2 
+                ? `<strong>${0 === post.likes.length ? "0" : post.likes.map((({ name: post }) => post)).join(", ")}</strong>`
+                : `<strong>${post.likes[Math.floor(Math.random() * post.likes.length)].name}</strong>
+                и <strong>еще ${(post.likes.length - 1).toString()}</strong>`}
+              </strong>
+            </p>
+          </div>
+          <button class="delete-button" data-id="${post.id}" data-user-id="${post.user.id}">Удалить пост</button>
         </div>
         <p class="post-text">
           <span class="user-name">${post.user.name}</span>
@@ -42,14 +54,78 @@ export function renderPostsPageComponent({ appEl }) {
           19 минут назад
         </p>
       </li>`
-  })
-  
+  }).join('');
+
   document.querySelector(".posts").innerHTML = allPosts
 
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
    */
+
+  const cliсkLike = (posts) => {
+    const likeButtons = document.querySelectorAll(".like-button");
+    for (const likeButton of likeButtons) {
+      likeButton.addEventListener('click', () => {
+        let id = likeButton.dataset.postId;
+        console.log( likeButtons)
+        likeButton.dataset.isLiked === "true" ?
+          postDisLike({ id })
+            .then((responseData) => {
+              console.log(responseData.post.likes.length);
+              console.log(post)
+              likeButton.innerHTML =
+                `<img src="./assets/images/like-not-active.svg">`
+              // console.log("Актуальный список постов:", posts);
+              // goToPage(POSTS_PAGE);
+            })
+          :
+          postLike({ id })
+            .then((responseData) => {
+              console.log(responseData.post.likes.length)
+              console.log(post)
+
+              likeButton.innerHTML =
+                `<img src="./assets/images/like-active.svg">`
+              // console.log("Актуальный список постов:", posts);
+              // goToPage(POSTS_PAGE);
+            })
+      })
+    }
+  }
+  cliсkLike(allPosts);
+
+
+  const deletePostButtons = document.querySelectorAll(".delete-button");
+  const postID = document.querySelectorAll(".post-header");
+
+  const a = false;
+  // if (post.user.id) {
+  const clickDelete = () => {
+    for (const deletePostButton of deletePostButtons) {
+      // deletePostButton.disabled = true;
+      // console.log(postID)
+
+      // if (a === true) {
+      deletePostButton.addEventListener('click', () => {
+        console.log(deletePostButton.dataset.userId)
+
+        console.log("f")
+        let id = deletePostButton.dataset.id;
+        console.log(id);
+        // deletePost({ id }).then(() => {
+        //   console.log("Удалено")
+        //   goToPage(POSTS_PAGE);
+        // });
+      })
+      // } else {
+      // deletePostButton.disabled = true;
+      // }
+    }
+  }
+  clickDelete();
+  // } else {
+  // }
 
 
   renderHeaderComponent({
@@ -64,3 +140,4 @@ export function renderPostsPageComponent({ appEl }) {
     });
   }
 }
+
