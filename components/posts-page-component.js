@@ -37,7 +37,7 @@ export function renderPostsPageComponent({ appEl }) {
                 : `<img src="./assets/images/like-not-active.svg">`}
             </button>
             <p class="post-likes-text">
-              Нравится: <strong>${post.likes.length < 2 
+              Нравится: <strong>${post.likes.length < 2
                 ? `<strong>${0 === post.likes.length ? "0" : post.likes.map((({ name: post }) => post)).join(", ")}</strong>`
                 : `<strong>${post.likes[Math.floor(Math.random() * post.likes.length)].name}</strong>
                 и <strong>еще ${(post.likes.length - 1).toString()}</strong>`}
@@ -63,37 +63,47 @@ export function renderPostsPageComponent({ appEl }) {
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
    */
 
-  const cliсkLike = (posts) => {
+  const cliсkLike = () => {
     const likeButtons = document.querySelectorAll(".like-button");
     for (const likeButton of likeButtons) {
       likeButton.addEventListener('click', () => {
         let id = likeButton.dataset.postId;
-        console.log( likeButtons)
         likeButton.dataset.isLiked === "true" ?
           postDisLike({ id })
             .then((responseData) => {
-              console.log(responseData.post.likes.length);
-              console.log(post)
               likeButton.innerHTML =
                 `<img src="./assets/images/like-not-active.svg">`
-              // console.log("Актуальный список постов:", posts);
-              // goToPage(POSTS_PAGE);
+                const postLikesText = likeButton.closest(".post-bottom").querySelector(".post-likes-text")
+                postLikesText.innerHTML = 
+                `<p class="post-likes-text">
+                  Нравится: <strong>${responseData.post.likes.length < 2
+                    ? `<strong>${0 === responseData.post.likes.length ? "0" : responseData.post.likes.map((({ name: post }) => post)).join(", ")}</strong>`
+                    : `<strong>${responseData.post.likes[Math.floor(Math.random() * responseData.post.likes.length)].name}</strong>
+                    и <strong>еще ${(responseData.post.likes.length - 1).toString()}</strong>`}
+                  </strong>
+                </p>`;
+                likeButton.dataset.isLiked = "false"
             })
           :
           postLike({ id })
             .then((responseData) => {
-              console.log(responseData.post.likes.length)
-              console.log(post)
-
               likeButton.innerHTML =
                 `<img src="./assets/images/like-active.svg">`
-              // console.log("Актуальный список постов:", posts);
-              // goToPage(POSTS_PAGE);
+                const postLikesText = likeButton.closest(".post-bottom").querySelector(".post-likes-text")
+                postLikesText.innerHTML = 
+                `<p class="post-likes-text">
+                  Нравится: <strong>${responseData.post.likes.length < 2
+                    ? `<strong>${0 === responseData.post.likes.length ? "0" : responseData.post.likes.map((({ name: post }) => post)).join(", ")}</strong>`
+                    : `<strong>${responseData.post.likes[Math.floor(Math.random() * responseData.post.likes.length)].name}</strong>
+                    и <strong>еще ${(responseData.post.likes.length - 1).toString()}</strong>`}
+                  </strong>
+                </p>`;
+                likeButton.dataset.isLiked = "true"
             })
       })
     }
   }
-  cliсkLike(allPosts);
+  cliсkLike();
 
 
   const deletePostButtons = document.querySelectorAll(".delete-button");
