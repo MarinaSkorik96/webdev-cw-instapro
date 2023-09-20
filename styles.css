@@ -68,7 +68,8 @@
   height: 500px;
   display: flex;
   justify-content: center;
-  background-color: #e0e0e0;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
 }
 
 .post-image {
@@ -195,4 +196,19 @@
   box-sizing: border-box;
   width: 100%;
   text-align: center;
+}
+
+.none {
+  display: none;
+}
+
+.post-bottom{
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete-button{
+  background-color: transparent;
+  border: none;
+  font-size: 14px;
 }
