@@ -4,9 +4,9 @@ import { USER_POSTS_PAGE, POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 import { postLike, postDisLike, deletePost } from "../api.js";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistance } from "date-fns";
 import { ru } from 'date-fns/locale'
-// import { cliсkLike } from "./click-like-component.js";
+import { cliсkLike } from "./click-like-component.js";
 
 
 export function renderPostsPageComponent({ appEl }) {
@@ -22,7 +22,8 @@ export function renderPostsPageComponent({ appEl }) {
 
   console.log("Актуальный список постов:", posts);
   const allPosts = posts.map((post) => {
-    const createDate = formatDistanceToNow(new Date(post.createdAt), {locale: ru})
+    const currentDate = new Date;
+    const createDate = formatDistance(new Date(post.createdAt), currentDate, {locale: ru})
     return `                  
       <li class="post">
         <div class="post-header" data-user-id="${post.user.id}">
@@ -54,7 +55,7 @@ export function renderPostsPageComponent({ appEl }) {
           ${post.description}
         </p>
         <p class="post-date">
-          ${createDate}
+          ${createDate} назад
         </p>
       </li>`
   }).join('');
@@ -66,46 +67,46 @@ export function renderPostsPageComponent({ appEl }) {
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
    */
 
-  const cliсkLike = () => {
-    const likeButtons = document.querySelectorAll(".like-button");
-    for (const likeButton of likeButtons) {
-      likeButton.addEventListener('click', () => {
-        let id = likeButton.dataset.postId;
-        likeButton.dataset.isLiked === "true" ?
-          postDisLike({ id })
-            .then((responseData) => {
-              likeButton.innerHTML =
-                `<img src="./assets/images/like-not-active.svg">`
-                const postLikesText = likeButton.closest(".post-bottom").querySelector(".post-likes-text")
-                postLikesText.innerHTML = 
-                `<p class="post-likes-text">
-                  Нравится: <strong>${responseData.post.likes.length < 2
-                    ? `<strong>${0 === responseData.post.likes.length ? "0" : responseData.post.likes.map((({ name: post }) => post)).join(", ")}</strong>`
-                    : `<strong>${responseData.post.likes[Math.floor(Math.random() * responseData.post.likes.length)].name}</strong>
-                    и <strong>еще ${(responseData.post.likes.length - 1).toString()}</strong>`}
-                  </strong>
-                </p>`;
-                likeButton.dataset.isLiked = "false"
-            })
-          :
-          postLike({ id })
-            .then((responseData) => {
-              likeButton.innerHTML =
-                `<img src="./assets/images/like-active.svg">`
-                const postLikesText = likeButton.closest(".post-bottom").querySelector(".post-likes-text")
-                postLikesText.innerHTML = 
-                `<p class="post-likes-text">
-                  Нравится: <strong>${responseData.post.likes.length < 2
-                    ? `<strong>${0 === responseData.post.likes.length ? "0" : responseData.post.likes.map((({ name: post }) => post)).join(", ")}</strong>`
-                    : `<strong>${responseData.post.likes[Math.floor(Math.random() * responseData.post.likes.length)].name}</strong>
-                    и <strong>еще ${(responseData.post.likes.length - 1).toString()}</strong>`}
-                  </strong>
-                </p>`;
-                likeButton.dataset.isLiked = "true"
-            })
-      })
-    }
-  }
+  // const cliсkLike = () => {
+  //   const likeButtons = document.querySelectorAll(".like-button");
+  //   for (const likeButton of likeButtons) {
+  //     likeButton.addEventListener('click', () => {
+  //       let id = likeButton.dataset.postId;
+  //       likeButton.dataset.isLiked === "true" ?
+  //         postDisLike({ id })
+  //           .then((responseData) => {
+  //             likeButton.innerHTML =
+  //               `<img src="./assets/images/like-not-active.svg">`
+  //               const postLikesText = likeButton.closest(".post-bottom").querySelector(".post-likes-text")
+  //               postLikesText.innerHTML = 
+  //               `<p class="post-likes-text">
+  //                 Нравится: <strong>${responseData.post.likes.length < 2
+  //                   ? `<strong>${0 === responseData.post.likes.length ? "0" : responseData.post.likes.map((({ name: post }) => post)).join(", ")}</strong>`
+  //                   : `<strong>${responseData.post.likes[Math.floor(Math.random() * responseData.post.likes.length)].name}</strong>
+  //                   и <strong>еще ${(responseData.post.likes.length - 1).toString()}</strong>`}
+  //                 </strong>
+  //               </p>`;
+  //               likeButton.dataset.isLiked = "false"
+  //           })
+  //         :
+  //         postLike({ id })
+  //           .then((responseData) => {
+  //             likeButton.innerHTML =
+  //               `<img src="./assets/images/like-active.svg">`
+  //               const postLikesText = likeButton.closest(".post-bottom").querySelector(".post-likes-text")
+  //               postLikesText.innerHTML = 
+  //               `<p class="post-likes-text">
+  //                 Нравится: <strong>${responseData.post.likes.length < 2
+  //                   ? `<strong>${0 === responseData.post.likes.length ? "0" : responseData.post.likes.map((({ name: post }) => post)).join(", ")}</strong>`
+  //                   : `<strong>${responseData.post.likes[Math.floor(Math.random() * responseData.post.likes.length)].name}</strong>
+  //                   и <strong>еще ${(responseData.post.likes.length - 1).toString()}</strong>`}
+  //                 </strong>
+  //               </p>`;
+  //               likeButton.dataset.isLiked = "true"
+  //           })
+  //     })
+  //   }
+  // }
   cliсkLike();
 
 
