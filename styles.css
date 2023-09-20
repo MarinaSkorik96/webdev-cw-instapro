@@ -68,7 +68,8 @@
   height: 500px;
   display: flex;
   justify-content: center;
-  background-color: #e0e0e0;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
 }
 
 .post-image {

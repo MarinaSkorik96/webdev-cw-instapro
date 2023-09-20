@@ -18,6 +18,8 @@ import {
 import { renderUserPostsPageComponent } from "./components/renderUserPostsPageComponent.js";
 // import { cliskLike } from "./components/click-like-component.js";
 
+// let userN = localStorage.getItem("user");
+// console.log(userN);
 
 export let user = getUserFromLocalStorage();
 export let page = null;
@@ -74,8 +76,9 @@ export const goToPage = (newPage, data) => {
       // export function renderUserPostsPageComponent() {};
       console.log("Открываю страницу пользователя: ", data.userId);
       const userId = data.userId
+      // const userToken = data.token
       console.log(userId);
-      return getUserPosts({userId})
+      return getUserPosts({token: getToken(), userId})
       .then((userPosts) => {
         page = USER_POSTS_PAGE;
         posts = userPosts;
@@ -139,6 +142,7 @@ const renderApp = () => {
     // appEl.innerHTML = "Здесь будет страница фотографий пользователя";
     return renderUserPostsPageComponent({
       appEl,
+      posts,
     });
   }
 };
