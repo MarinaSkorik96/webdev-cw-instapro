@@ -71,6 +71,34 @@ export function renderPostsPageComponent({ appEl }) {
 
   cliсkLike();
 
+  const deletePostButtons = document.querySelectorAll(".delete-button");
+  for (const deletePostButton of deletePostButtons) {
+    deletePostButton.disabled = true;
+    if (user != null) {
+      if (deletePostButton.dataset.userLogin === user.login) {
+        console.log(user.login)
+        deletePostButton.disabled = false;
+      }
+    }
+  }
+
+  const clickDelete = () => {
+    for (const deletePostButton of deletePostButtons) {
+      deletePostButton.addEventListener('click', () => {
+        if (deletePostButton.dataset.userLogin === user.login) {
+          let id = deletePostButton.dataset.id;
+          deletePost({ id }).then(() => {
+            console.log("Удалено")
+            goToPage(POSTS_PAGE);
+          });
+        } else {
+          alert("Вы не можете удалить чужой пост")
+        }
+      })
+    }
+  }
+  clickDelete();
+
   renderHeaderComponent({
     element: document.querySelector(".header-container"),
   });
