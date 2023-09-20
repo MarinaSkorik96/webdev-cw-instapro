@@ -85,15 +85,11 @@ export function renderPostsPageComponent({ appEl }) {
   const clickDelete = () => {
     for (const deletePostButton of deletePostButtons) {
       deletePostButton.addEventListener('click', () => {
-        if (deletePostButton.dataset.userLogin === user.login) {
           let id = deletePostButton.dataset.id;
           deletePost({ id }).then(() => {
             console.log("Удалено")
             goToPage(POSTS_PAGE);
           });
-        } else {
-          alert("Вы не можете удалить чужой пост")
-        }
       })
     }
   }
